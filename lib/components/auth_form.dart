@@ -1,8 +1,15 @@
+import 'dart:io';
+
+import 'package:chat_base/components/user_image_picker.dart';
 import 'package:chat_base/models/auth_form_data.dart';
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
-  const AuthForm({Key? key}) : super(key: key);
+  final Function(AuthFormData formData) onSubmit;
+  const AuthForm({
+    Key? key,
+    required this.onSubmit,
+  }) : super(key: key);
 
   @override
   _AuthFormState createState() => _AuthFormState();
@@ -11,13 +18,36 @@ class AuthForm extends StatefulWidget {
 AuthFormData _formData = AuthFormData();
 
 class _AuthFormState extends State<AuthForm> {
-  @override
-  Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-    _submit() {
-      _formKey.currentState!.validate();
+  final _formKey = GlobalKey<FormState>();
+
+  _submit() {
+    bool isValid = _formKey.currentState!.validate();
+
+    if (!isValid) {
+      return;
     }
 
+    widget.onSubmit(_formData);
+
+    if (_formData.image == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.red,
+          content: Text(
+            'Selecione uma imagem!',
+            style: TextStyle(),
+          ),
+        ),
+      );
+    }
+  }
+
+  void _handleSubmit(File? image) {
+    image = _formData.image;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: SingleChildScrollView(
         child: Column(
@@ -26,10 +56,15 @@ class _AuthFormState extends State<AuthForm> {
             Card(
               margin: const EdgeInsets.all(8),
               child: Form(
+                key: _formKey,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: [
+                      if (_formData.isSignUp)
+                        UserImagePicker(
+                          imagePick: _handleSubmit,
+                        ),
                       if (_formData.isSignUp)
                         TextFormField(
                           initialValue: _formData.name,
@@ -38,6 +73,12 @@ class _AuthFormState extends State<AuthForm> {
                           decoration: const InputDecoration(
                             labelText: 'Nome',
                           ),
+                          validator: (_) {
+                            if (_formData.name.trim().length < 3) {
+                              return 'O nome deve conter pelo menos 3 caracteres';
+                            }
+                            return null;
+                          },
                         ),
                       TextFormField(
                         initialValue: _formData.email,
@@ -46,6 +87,16 @@ class _AuthFormState extends State<AuthForm> {
                         decoration: const InputDecoration(
                           labelText: 'E-mail',
                         ),
+                        validator: (_) {
+                          if (!_formData.email.trim().contains('@') ||
+                              !_formData.email.trim().contains('.')) {
+                            return 'E-mail inválido';
+                          }
+                          if (_formData.email.contains(' ')) {
+                            return 'O e-mail não pode conter espaços';
+                          }
+                          return null;
+                        },
                         keyboardType: TextInputType.emailAddress,
                       ),
                       TextFormField(
@@ -56,6 +107,12 @@ class _AuthFormState extends State<AuthForm> {
                         decoration: const InputDecoration(
                           labelText: 'Senha',
                         ),
+                        validator: (_) {
+                          if (_formData.password.length < 6) {
+                            return 'A senha deve conter pelo menos 6 caracteres';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 10),
                       ElevatedButton(
