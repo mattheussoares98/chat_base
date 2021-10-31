@@ -48,7 +48,7 @@ class _UserImagePickerState extends State<UserImagePicker> {
             children: const [
               Icon(Icons.image),
               SizedBox(width: 10),
-              Text('Adicionar imagem'),
+              Text('Adicionars imagem'),
             ],
           ),
         ),
