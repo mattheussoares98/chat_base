@@ -12,10 +12,14 @@ class AuthPage extends StatefulWidget {
 class _AuthPageState extends State<AuthPage> {
   bool isLoading = false;
 
-  void handleSubmit(AuthFormData formData) {
+  void _handleSubmit(AuthFormData formData) {
     setState(() {
       isLoading = true;
     });
+
+    print('print');
+    print(formData.image);
+    print(formData.name);
 
     setState(() {
       isLoading = false;
@@ -28,7 +32,7 @@ class _AuthPageState extends State<AuthPage> {
       backgroundColor: Theme.of(context).primaryColor,
       body: Stack(
         children: [
-          AuthForm(onSubmit: handleSubmit),
+          AuthForm(onSubmit: _handleSubmit),
           if (isLoading)
             Container(
               width: double.infinity,

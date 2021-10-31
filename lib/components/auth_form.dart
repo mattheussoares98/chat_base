@@ -29,7 +29,7 @@ class _AuthFormState extends State<AuthForm> {
 
     widget.onSubmit(_formData);
 
-    if (_formData.image == null) {
+    if (_formData.image == null && _formData.isSignUp) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           backgroundColor: Colors.red,
@@ -42,8 +42,8 @@ class _AuthFormState extends State<AuthForm> {
     }
   }
 
-  void _handleSubmit(File? image) {
-    image = _formData.image;
+  void _handleImagePick(File? image) {
+    _formData.image = image;
   }
 
   @override
@@ -63,7 +63,7 @@ class _AuthFormState extends State<AuthForm> {
                     children: [
                       if (_formData.isSignUp)
                         UserImagePicker(
-                          imagePick: _handleSubmit,
+                          imagePick: _handleImagePick,
                         ),
                       if (_formData.isSignUp)
                         TextFormField(
@@ -73,7 +73,8 @@ class _AuthFormState extends State<AuthForm> {
                           decoration: const InputDecoration(
                             labelText: 'Nome',
                           ),
-                          validator: (_) {
+                          validator: (_name) {
+                            _name = _formData.name;
                             if (_formData.name.trim().length < 3) {
                               return 'O nome deve conter pelo menos 3 caracteres';
                             }
