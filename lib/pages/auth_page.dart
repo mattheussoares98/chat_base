@@ -1,5 +1,5 @@
 import 'package:chat_base/components/auth_form.dart';
-import 'package:chat_base/models/auth_form_data.dart';
+import 'package:chat_base/core/models/auth_form_data.dart';
 import 'package:flutter/material.dart';
 
 class AuthPage extends StatefulWidget {
@@ -13,17 +13,23 @@ class _AuthPageState extends State<AuthPage> {
   bool isLoading = false;
 
   void _handleSubmit(AuthFormData formData) {
-    setState(() {
-      isLoading = true;
-    });
+    try {
+      setState(() {
+        isLoading = true;
+      });
 
-    print('print');
-    print(formData.image);
-    print(formData.name);
-
-    setState(() {
-      isLoading = false;
-    });
+      if (formData.isLogin) {
+        //login
+      } else {
+        //signup
+      }
+    } catch (error) {
+      null;
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
