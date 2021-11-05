@@ -50,7 +50,7 @@ class AuthMockService implements AuthService {
     final newUser = ChatUser(
       email: email,
       id: Random().nextDouble().toString(),
-      imageUrl: image!.path,
+      imageUrl: image?.path ?? 'lib/assets/avatar.png',
       name: name,
     );
 

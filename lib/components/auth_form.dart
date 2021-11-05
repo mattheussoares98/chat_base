@@ -43,7 +43,9 @@ class _AuthFormState extends State<AuthForm> {
   }
 
   void _handleImagePick(File? image) {
-    _formData.image = image;
+    setState(() {
+      _formData.image = image;
+    });
   }
 
   @override
