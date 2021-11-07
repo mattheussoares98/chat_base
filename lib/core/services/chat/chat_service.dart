@@ -1,4 +1,3 @@
-import 'package:chat_base/components/messages.dart';
 import 'package:chat_base/core/models/chat_message.dart';
 import 'package:chat_base/core/models/chat_user.dart';
 import 'package:chat_base/core/services/chat/chat_mock_service.dart';
