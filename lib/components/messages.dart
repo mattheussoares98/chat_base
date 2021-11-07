@@ -3,7 +3,6 @@ import 'package:chat_base/core/models/chat_message.dart';
 import 'package:chat_base/core/services/auth/auth_service.dart';
 import 'package:chat_base/core/services/chat/chat_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 class Messages extends StatelessWidget {
   const Messages({Key? key}) : super(key: key);
