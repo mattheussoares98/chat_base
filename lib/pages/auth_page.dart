@@ -1,6 +1,5 @@
 import 'package:chat_base/components/auth_form.dart';
 import 'package:chat_base/core/models/auth_form_data.dart';
-import 'package:chat_base/core/services/auth/auth_mock_service.dart';
 import 'package:chat_base/core/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 
