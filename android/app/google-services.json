@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1058293166557",
+    "project_id": "cod3r-chat-b5c37",
+    "storage_bucket": "cod3r-chat-b5c37.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1058293166557:android:39d2798d5154206dabc634",
+        "android_client_info": {
+          "package_name": "com.mattheus.chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1058293166557-louofcre4uoip1kplc4m78udm3t94829.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGkMizXtmocvkULOc7yplDsy-HeyN03jQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1058293166557-louofcre4uoip1kplc4m78udm3t94829.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

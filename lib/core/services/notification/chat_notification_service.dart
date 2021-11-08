@@ -5,19 +5,19 @@ class ChatNotificationService with ChangeNotifier {
   final List<ChatNotification> _items = [];
 
   List<ChatNotification> get items {
-    return [...items];
+    return [..._items];
   }
 
   int get itemCount {
     return _items.length;
   }
 
-  addNotification(ChatNotification notification) {
+  void addNotification(ChatNotification notification) {
     _items.add(notification);
     notifyListeners();
   }
 
-  removeNotification(int i) {
+  void removeNotification(int i) {
     _items.removeAt(i);
     notifyListeners();
   }
