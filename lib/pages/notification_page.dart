@@ -1,4 +1,3 @@
-import 'package:chat_base/core/models/chat_notification.dart';
 import 'package:chat_base/core/services/notification/chat_notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
