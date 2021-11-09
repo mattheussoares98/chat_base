@@ -118,6 +118,26 @@ class _AuthFormState extends State<AuthForm> {
                           return null;
                         },
                       ),
+                      if (_formData.isSignUp)
+                        TextFormField(
+                          initialValue: _formData.confirmPassword,
+                          onChanged: (value) =>
+                              _formData.confirmPassword = value,
+                          key: const ValueKey('confirmPassword'),
+                          obscureText: true,
+                          decoration: const InputDecoration(
+                            labelText: 'Confirmar senha',
+                          ),
+                          validator: (_) {
+                            if (_formData.confirmPassword.length < 6) {
+                              return 'A senha deve conter pelo menos 6 caracteres';
+                            } else if (_formData.confirmPassword !=
+                                _formData.password) {
+                              return 'As senhas não coincidem';
+                            }
+                            return null;
+                          },
+                        ),
                       const SizedBox(height: 10),
                       ElevatedButton(
                         onPressed: _submit,

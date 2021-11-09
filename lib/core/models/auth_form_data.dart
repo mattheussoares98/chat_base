@@ -8,6 +8,7 @@ class AuthFormData {
   String password = '';
   File? image;
   AuthMode _mode = AuthMode.login;
+  String confirmPassword = '';
 
   bool get isLogin {
     return _mode == AuthMode.login;

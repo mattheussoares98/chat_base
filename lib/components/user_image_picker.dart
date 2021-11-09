@@ -29,20 +29,24 @@ class _UserImagePickerState extends State<UserImagePicker> {
       _image = File(_pickedImage.path);
     });
 
-    print(_image);
-
     widget.imagePick(_image);
   }
 
   @override
   Widget build(BuildContext context) {
+    ImageProvider? provider;
+    final uri = Uri.parse('lib/assets/avatar.png');
+    if (uri.path.contains('lib/assets/avatar.png')) {
+      provider = const AssetImage('lib/assets/avatar.png');
+    }
+
     return Column(
       children: [
         CircleAvatar(
           radius: 40,
           backgroundColor: Colors.grey,
           backgroundImage: _image == null
-              ? null
+              ? provider
               : FileImage(
                   _image!,
                 ),
