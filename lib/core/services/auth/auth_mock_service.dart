@@ -20,6 +20,11 @@ class AuthMockService implements AuthService {
   );
 
   @override
+  String? get error {
+    return '';
+  }
+
+  @override
   ChatUser? get currentUser {
     return _currentUser;
   }
@@ -32,8 +37,9 @@ class AuthMockService implements AuthService {
   @override
   Future<void> login(
     String email,
-    String password,
-  ) async {
+    String password, [
+    String? error,
+  ]) async {
     _updateUser(_users[email]);
   }
 

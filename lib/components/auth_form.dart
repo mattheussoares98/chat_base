@@ -28,19 +28,7 @@ class _AuthFormState extends State<AuthForm> {
     }
 
     widget.onSubmit(_formData);
-
-    //aparece uma mensagem dizendo que precisa selecionar uma imagem quando não tem alguma selecionada
-    // if (_formData.image == null && _formData.isSignUp) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     const SnackBar(
-    //       backgroundColor: Colors.red,
-    //       content: Text(
-    //         'Selecione uma imagem!',
-    //         style: TextStyle(),
-    //       ),
-    //     ),
-    //   );
-    // }
+    // _formData = AuthFormData();
   }
 
   void _handleImagePick(File? image) {

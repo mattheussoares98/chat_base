@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:chat_base/components/message_bubble.dart';
 import 'package:chat_base/core/models/chat_message.dart';
 import 'package:chat_base/core/services/auth/auth_service.dart';
@@ -17,20 +19,19 @@ class Messages extends StatelessWidget {
           return const CircularProgressIndicator();
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return const Center(
-            child: Text('Não há dados. Vamos conversar?'),
+            child: Text('Não há mensagens. Vamos conversar?'),
           );
         } else {
           final msgs = snapshot.data!;
           return ListView.builder(
             reverse: true,
-            // reverse: true,
             itemCount: msgs.length,
             itemBuilder: (context, indice) {
               return MessageBubble(
                 key: ValueKey(msgs[indice].id),
                 belongsToCurrentUser: isCurrentUser!.id == msgs[indice].userId,
                 message: ChatMessage(
-                  id: '1',
+                  id: Random().nextDouble().toString(),
                   text: msgs[indice].text,
                   createdAt: DateTime.now(),
                   userId: '1',

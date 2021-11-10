@@ -14,11 +14,11 @@ class _AuthPageState extends State<AuthPage> {
   bool isLoading = false;
 
   void _handleSubmit(AuthFormData formData) {
-    try {
-      setState(() {
-        isLoading = true;
-      });
+    setState(() {
+      isLoading = true;
+    });
 
+    try {
       if (formData.isLogin) {
         AuthService().login(
           formData.email,
@@ -33,11 +33,25 @@ class _AuthPageState extends State<AuthPage> {
         );
       }
     } catch (error) {
-      null;
+      error;
     } finally {
       setState(() {
         isLoading = false;
+        // formData.name = '';
+        // formData.password = '';
+        // formData.email = '';
+        // formData.name = '';
+        // formData.confirmPassword = '';
       });
+      if (AuthService().error == 'senha errada') {
+        print(AuthService().error);
+        print(formData.password);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AuthService().error!),
+          ),
+        );
+      }
     }
   }
 
@@ -53,14 +67,12 @@ class _AuthPageState extends State<AuthPage> {
               width: double.infinity,
               height: double.infinity,
               color: Colors.black12,
-              child: null,
+              child: const CircularProgressIndicator(),
             ),
           if (isLoading)
-            Center(
+            const Center(
               // ignore: avoid_unnecessary_containers
-              child: Container(
-                child: const CircularProgressIndicator(),
-              ),
+              child: CircularProgressIndicator(),
             ),
         ],
       ),

@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:chat_base/components/messages.dart';
 import 'package:chat_base/components/new_message.dart';
-import 'package:chat_base/core/models/chat_notification.dart';
 import 'package:chat_base/core/services/auth/auth_service.dart';
 import 'package:chat_base/core/services/notification/chat_notification_service.dart';
 import 'package:chat_base/pages/notification_page.dart';
@@ -81,23 +80,6 @@ class ChatPage extends StatelessWidget {
           ],
         ),
       ),
-      //só pra testar adicionar as notificações
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     Provider.of<ChatNotificationService>(
-      //       context,
-      //       listen: false,
-      //     ).addNotification(
-      //       ChatNotification(
-      //         body: Random().nextDouble().toString(),
-      //         title: 'nova notificação',
-      //       ),
-      //     );
-      //   },
-      //   child: const Icon(
-      //     Icons.add,
-      //   ),
-      // ),
     );
   }
 }
