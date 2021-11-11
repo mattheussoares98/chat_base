@@ -7,7 +7,7 @@ import 'auth_firebase_service.dart';
 abstract class AuthService {
   Stream<ChatUser?> get userChanges;
 
-  String? get error;
+  String? error;
 
   ChatUser? get currentUser;
 

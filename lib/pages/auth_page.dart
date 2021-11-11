@@ -24,6 +24,13 @@ class _AuthPageState extends State<AuthPage> {
           formData.email,
           formData.password,
         );
+        if (AuthService().error != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Usuário/senha inválido'),
+            ),
+          );
+        }
       } else {
         AuthService().signUp(
           formData.name,
@@ -33,26 +40,14 @@ class _AuthPageState extends State<AuthPage> {
         );
       }
     } catch (error) {
+      print('erro pra cadastrar $error');
       error;
-    } finally {
-      setState(() {
-        isLoading = false;
-        // formData.name = '';
-        // formData.password = '';
-        // formData.email = '';
-        // formData.name = '';
-        // formData.confirmPassword = '';
-      });
-      if (AuthService().error == 'senha errada') {
-        print(AuthService().error);
-        print(formData.password);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AuthService().error!),
-          ),
-        );
-      }
     }
+
+    AuthService().error = null;
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -67,7 +62,7 @@ class _AuthPageState extends State<AuthPage> {
               width: double.infinity,
               height: double.infinity,
               color: Colors.black12,
-              child: const CircularProgressIndicator(),
+              child: null,
             ),
           if (isLoading)
             const Center(

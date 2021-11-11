@@ -2,8 +2,23 @@ import 'dart:async';
 import 'package:chat_base/core/models/chat_user.dart';
 import 'dart:io';
 import 'package:chat_base/core/services/auth/auth_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+
+//ia fazer um teste colocando o snackBar aqui nessa tela pra ver se funcionava a mensagem de erro do login
+
+// class Message extends StatelessWidget {
+//   const Message({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       ScaffoldMessenger.of(context).showSnackBar(snackBar),
+//     );
+//   }
+// }
 
 class AuthFirebaseService implements AuthService {
   static ChatUser? _currentUser;
@@ -15,18 +30,20 @@ class AuthFirebaseService implements AuthService {
       final authChanges = FirebaseAuth.instance.authStateChanges();
 
       await for (final user in authChanges) {
-        _currentUser = user == null
-            ? null
-            : ChatUser(
-                email: user.email!,
-                id: user.uid,
-                imageUrl: user.photoURL ?? 'lib/assets/avatar.png',
-                name: user.displayName ?? user.email!.split('@')[0],
-              );
+        _currentUser = user == null ? null : _toChatUser(user);
         controller.add(_currentUser);
       }
     },
   );
+
+  static _toChatUser(User user, [String? imageUrl]) {
+    return ChatUser(
+      email: user.email!,
+      id: user.uid,
+      imageUrl: imageUrl ?? user.photoURL ?? 'lib/assets/avatar.png',
+      name: user.displayName ?? user.email!.split('@')[0],
+    );
+  }
 
   @override
   String? get error {
@@ -44,6 +61,11 @@ class AuthFirebaseService implements AuthService {
   }
 
   @override
+  set error(String? _error) {
+    errorMensage = _error;
+  }
+
+  @override
   Future<void> login(
     String email,
     String password,
@@ -55,12 +77,10 @@ class AuthFirebaseService implements AuthService {
         password: password,
       );
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        errorMensage = 'usuário não encontrado';
-      } else if (e.code == 'wrong-password') {
-        errorMensage = 'senha errada';
-      }
-    }
+      e;
+      error = e.message;
+      errorMensage = e.message;
+    } finally {}
   }
 
   @override
@@ -88,6 +108,17 @@ class AuthFirebaseService implements AuthService {
     return await imageRef.getDownloadURL();
   }
 
+  Future<void> _saveChatUser(ChatUser user) async {
+    final store = FirebaseFirestore.instance;
+    final docRef = store.collection('users').doc(user.id);
+
+    return docRef.set({
+      'name': user.name,
+      'email': user.email,
+      'imageUrl': user.imageUrl,
+    });
+  }
+
   @override
   Future<void> signUp(
     String name,
@@ -109,7 +140,10 @@ class AuthFirebaseService implements AuthService {
     final imageUrl = await _uploadUserImage(image, imageName);
 
     //2. atualizar os atributos do usuário
-    credencial.user?.updateDisplayName(name); //atualizar o nome
-    credencial.user?.updatePhotoURL(imageUrl);
+    await credencial.user?.updateDisplayName(name); //atualizar o nome
+    await credencial.user?.updatePhotoURL(imageUrl);
+
+    //3. adicionar o usuário no firebase firestore (opcional)
+    await _saveChatUser(_toChatUser(credencial.user!, imageUrl));
   }
 }
