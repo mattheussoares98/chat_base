@@ -84,12 +84,14 @@ class MessageBubble extends StatelessWidget {
                         ? MainAxisAlignment.end
                         : MainAxisAlignment.start,
                     children: [
-                      Text(
-                        message.text,
-                        style: TextStyle(
-                          color: belongsToCurrentUser
-                              ? Colors.black
-                              : Colors.white,
+                      Expanded(
+                        child: Text(
+                          message.text,
+                          style: TextStyle(
+                            color: belongsToCurrentUser
+                                ? Colors.black
+                                : Colors.white,
+                          ),
                         ),
                       ),
                     ],

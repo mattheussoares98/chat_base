@@ -5,7 +5,6 @@ import 'package:chat_base/core/services/auth/auth_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
 
 //ia fazer um teste colocando o snackBar aqui nessa tela pra ver se funcionava a mensagem de erro do login
 
@@ -36,12 +35,12 @@ class AuthFirebaseService implements AuthService {
     },
   );
 
-  static _toChatUser(User user, [String? imageUrl]) {
+  static _toChatUser(User user, [String? name, String? imageUrl]) {
     return ChatUser(
       email: user.email!,
       id: user.uid,
       imageUrl: imageUrl ?? user.photoURL ?? 'lib/assets/avatar.png',
-      name: user.displayName ?? user.email!.split('@')[0],
+      name: name ?? user.displayName ?? user.email!.split('@')[0],
     );
   }
 
@@ -143,7 +142,9 @@ class AuthFirebaseService implements AuthService {
     await credencial.user?.updateDisplayName(name); //atualizar o nome
     await credencial.user?.updatePhotoURL(imageUrl);
 
+    _currentUser = _toChatUser(credencial.user!, name, imageUrl);
+
     //3. adicionar o usuário no firebase firestore (opcional)
-    await _saveChatUser(_toChatUser(credencial.user!, imageUrl));
+    await _saveChatUser(_currentUser!);
   }
 }

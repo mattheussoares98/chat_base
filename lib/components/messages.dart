@@ -16,7 +16,9 @@ class Messages extends StatelessWidget {
       stream: ChatService().messagesStream(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return const Center(
             child: Text('Não há mensagens. Vamos conversar?'),
@@ -34,7 +36,7 @@ class Messages extends StatelessWidget {
                   id: Random().nextDouble().toString(),
                   text: msgs[indice].text,
                   createdAt: DateTime.now(),
-                  userId: '1',
+                  userId: Random().nextDouble().toString(),
                   userName: msgs[indice].userName,
                   userImageUrl: msgs[indice].userImageUrl,
                 ),
