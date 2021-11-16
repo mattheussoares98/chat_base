@@ -1,4 +1,5 @@
 import 'package:chat_base/core/models/chat_notification.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 
 class ChatNotificationService with ChangeNotifier {
@@ -12,7 +13,7 @@ class ChatNotificationService with ChangeNotifier {
     return _items.length;
   }
 
-  void addNotification(ChatNotification notification) {
+  void add(ChatNotification notification) {
     _items.add(notification);
     notifyListeners();
   }
@@ -20,5 +21,50 @@ class ChatNotificationService with ChangeNotifier {
   void removeNotification(int i) {
     _items.removeAt(i);
     notifyListeners();
+  }
+
+  //pushNotification
+
+  Future<void> init() async {
+    await _configureForeground();
+    await _configureBackground();
+    await _configureTerminated();
+  }
+
+  Future<bool> get _isAuthorized async {
+    final messaging = FirebaseMessaging.instance;
+    final permission = await messaging.requestPermission();
+    return permission.authorizationStatus == AuthorizationStatus.authorized;
+  }
+
+  Future<void> _configureForeground() async {
+    if (await _isAuthorized) {
+      FirebaseMessaging.onMessage.listen(_messageHandler);
+    }
+  }
+
+  //mostra a notificação quando o app está em segundo plano. Ele mostra igual uma notificação de qualquer outro app da forma padrão do android (quando arrasta pra baixo pra ver as notificações)
+  Future<void> _configureBackground() async {
+    if (await _isAuthorized) {
+      FirebaseMessaging.onMessageOpenedApp.listen(_messageHandler);
+    }
+  }
+
+  Future<void> _configureTerminated() async {
+    if (await _isAuthorized) {
+      RemoteMessage? remoteMsg =
+          await FirebaseMessaging.instance.getInitialMessage();
+
+      _messageHandler(remoteMsg);
+    }
+  }
+
+  void _messageHandler(RemoteMessage? msg) {
+    (msg) {
+      add(ChatNotification(
+        body: msg.notification!.body ?? 'Não informado',
+        title: msg.notification!.title ?? 'Não informado',
+      ));
+    };
   }
 }
