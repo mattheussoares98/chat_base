@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:chat_base/components/user_image_picker.dart';
 import 'package:chat_base/core/models/auth_form_data.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
@@ -26,9 +27,15 @@ class _AuthFormState extends State<AuthForm> {
     if (!isValid) {
       return;
     }
-
     widget.onSubmit(_formData);
-    // _formData = AuthFormData();
+
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        return;
+      } else {
+        _formData = AuthFormData();
+      }
+    });
   }
 
   void _handleImagePick(File? image) {

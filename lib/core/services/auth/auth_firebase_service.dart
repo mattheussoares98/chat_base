@@ -6,19 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-//ia fazer um teste colocando o snackBar aqui nessa tela pra ver se funcionava a mensagem de erro do login
-
-// class Message extends StatelessWidget {
-//   const Message({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       ScaffoldMessenger.of(context).showSnackBar(snackBar),
-//     );
-//   }
-// }
-
 class AuthFirebaseService implements AuthService {
   static ChatUser? _currentUser;
   static String? errorMensage;

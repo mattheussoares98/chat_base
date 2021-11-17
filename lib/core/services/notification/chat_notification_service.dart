@@ -60,6 +60,8 @@ class ChatNotificationService with ChangeNotifier {
   }
 
   void _messageHandler(RemoteMessage? msg) {
+    if (msg == null || msg.notification == null) return;
+
     (msg) {
       add(ChatNotification(
         body: msg.notification!.body ?? 'Não informado',
