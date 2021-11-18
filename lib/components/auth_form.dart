@@ -29,6 +29,8 @@ class _AuthFormState extends State<AuthForm> {
     }
     widget.onSubmit(_formData);
 
+    //limpar dados do formulário
+    //faz uma validação pra ver se fez o login e só depois que fez o login, apaga os dados
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user == null) {
         return;

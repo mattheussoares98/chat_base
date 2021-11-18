@@ -26,9 +26,9 @@ class ChatNotificationService with ChangeNotifier {
   //pushNotification
 
   Future<void> init() async {
+    await _configureTerminated(); //o ideal é deixar nessa ordem
     await _configureForeground();
     await _configureBackground();
-    await _configureTerminated();
   }
 
   Future<bool> get _isAuthorized async {
@@ -62,11 +62,9 @@ class ChatNotificationService with ChangeNotifier {
   void _messageHandler(RemoteMessage? msg) {
     if (msg == null || msg.notification == null) return;
 
-    (msg) {
-      add(ChatNotification(
-        body: msg.notification!.body ?? 'Não informado',
-        title: msg.notification!.title ?? 'Não informado',
-      ));
-    };
+    add(ChatNotification(
+      body: msg.notification!.body ?? 'Não informado',
+      title: msg.notification!.title ?? 'Não informado',
+    ));
   }
 }
